@@ -17,12 +17,12 @@ class LoginController extends Controller
 
  		if(\Auth::attempt($dataLogin)){
  			if (\Auth::user()->role_id == 3) {
- 				return \Redirect::to('/')->with('sc_msg', 'Login Successfuly');
+ 				return \Redirect::to('user/')->with('sc_msg', 'Login Successfuly');
  			}
  			return \Redirect::to('admin/manage/dashboard')->with('sc_msg', 'Login Successfuly');
  		}
 
- 		return \Redirect::to('login')
+ 		return \Redirect::to('/')
  				->with('err_msg', 'Login failed, username or password wrong')
  				->withInput($dataLogin);
  	}
@@ -31,7 +31,7 @@ class LoginController extends Controller
  	{
  		\Auth::logout();
 
- 		return \Redirect::to('login')
+ 		return \Redirect::to('/')
  				->with('sc_msg', 'Logout Successfuly');
  	}
 }

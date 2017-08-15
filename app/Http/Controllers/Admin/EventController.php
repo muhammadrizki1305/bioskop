@@ -24,7 +24,7 @@ class EventController extends Controller
 	public function create(Request $request,$id)
 	{
 		$data['studio']								= 	\App\Studio::where(['is_blocked'=>0,'is_used'=>0])->get();
-		$data['list']								=	\App\Ticket::select('play_at','end_at','start_at','expired_at','studio_id','film_id')->where('film_id',8)->groupBy('play_at','end_at','start_at','expired_at','studio_id','film_id')->get();
+		$data['list']								=	\App\Ticket::select('play_at','end_at','start_at','expired_at','studio_id','film_id')->where('film_id',$id)->groupBy('play_at','end_at','start_at','expired_at','studio_id','film_id')->get();
 		$data['film_id']							=	$id;
 		return view('pages.events.create', compact('data'));
 	}

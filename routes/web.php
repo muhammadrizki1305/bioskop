@@ -14,10 +14,20 @@
 Route::get('/dummy',							'Admin\AdminManageController@dummy');
 
 Route::group( [ 'middleware' => 'web' ], function(){
-	Route::get('login',										'LoginController@showLogin')->name('login');
+	Route::get('/',											'LoginController@showLogin')->name('login');
 	Route::post('login',									'LoginController@doLogin');
 	Route::get('logout',									'LoginController@doLogout');
 
+	Route::group( ['prefix' => 'user' , 'middleware' => 'auth:web'], function(){
+
+			Route::get('/',									'Operator\UserController@index');
+			Route::get('/feedback',							'Operator\UserController@feedback');
+			Route::post('/store',							'Operator\UserController@store');
+			Route::get('/edit/{id}',						'Operator\UserController@edit');
+			Route::post('/update/{id}',						'Operator\UserController@update');
+			Route::get('/destroy/{id}',						'Operator\UserController@destroy');
+
+	});	
 
 	Route::group( ['prefix' => 'admin/manage' , 'middleware' => 'filter:auth:web'], function(){
 
@@ -105,23 +115,6 @@ Route::group( [ 'middleware' => 'web' ], function(){
 			Route::get('/destroy',							'Admin\EventController@destroy');
 			Route::get('/detail',							'Admin\EventController@detail');
 			Route::get('/sale',								'Admin\EventController@sale');
-		});
-
-		Route::group( ['prefix' => 'course'], function(){
-			Route::get('/',									'Admin\CourseController@index');
-			Route::get('/me',								'Admin\CourseController@myCourse');
-			Route::get('/all',								'Admin\CourseController@allCourse');
-			Route::get('/create',							'Admin\CourseController@create');
-			Route::post('/store',							'Admin\CourseController@store');
-
-			Route::group( ['prefix' => '{course_id}/playlist'], function(){
-				Route::get('/',								'Admin\PlaylistController@index');
-				Route::get('/create',						'Admin\PlaylistController@create');
-				Route::post('/store-video',					'Admin\PlaylistController@storeVideo');
-				Route::post('/store',						'Admin\PlaylistController@store');
-				Route::get('/delete/{playlist_id}',					'Admin\PlaylistController@destroy');
-			});
-
 		});
 
 		Route::group( ['prefix' => 'email'], function(){
